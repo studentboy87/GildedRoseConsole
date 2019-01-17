@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using GildedRoseConsole.Models;
 using GildedRoseConsole.Services.Implementation;
 using GildedRoseConsole.Services.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace GildedRoseConsole
 {
     public class Program
     {
-        private readonly IAppService _appService;
+        private readonly IAppService _appService = new AppService();
         IList<Item> Items;
         IList<string> ApprovedInventory;
-
-        public Program()
-        {
-        }
 
         static void Main(string[] args)
         {
@@ -33,26 +30,29 @@ namespace GildedRoseConsole
                     new Item {ItemName = "Conjured", SellIn = 2, Quality = 2},
                     new Item {ItemName = "Conjured", SellIn = -1, Quality = 5}
                 },
-                ApprovedInventory = new List<string>
-                {
-                    "Aged Brie",
-                    "Backstage passes",
-                    "Sulfuras",
-                    "Normal Item",
-                    "Conjured"
-                }
+                ApprovedInventory =
+                    new List<string> { "Aged Brie", "Backstage passes", "Sulfuras", "Normal Item", "Conjured" }
             };
-            Console.WriteLine(app.Items);
+            PrintInventory(app);
             app.UpdateInventory();
-            Console.WriteLine(app.Items);
+            Console.WriteLine("\n Update Run \n");
+            PrintInventory(app);
             Console.ReadKey();
+        }
+
+        private static void PrintInventory(Program app)
+        {
+            foreach (var appItem in app.Items)
+            {
+                var writeLine = string.Concat(appItem.ItemName, " ", appItem.SellInString, " ", appItem.QualityString);
+                Console.WriteLine(writeLine);
+            }
         }
 
         public void UpdateInventory()
         {
             foreach (var item in Items)
             {
-
                 if (ApprovedInventory.Contains(item.ItemName))
                 {
                     var updateItem = _appService.DailyUpdateServiceCreator(item);
@@ -60,11 +60,9 @@ namespace GildedRoseConsole
                 }
                 else
                 {
-                    //need to interfaces this off
-                    //var errorItem = _appService.ErrorUpdate(item);
-
+                    var errorItem = _appService.ErrorUpdate(item);
+                    errorItem.UnknownItem(item);
                 }
-
             }
         }
     }

@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GildedRoseConsole.Models;
+using GildedRoseConsole.Services.Interfaces;
 
 namespace GildedRoseConsole.Services.Implementation
 {
-    public class ErrorUpdate
+    public class ErrorUpdate : IErrorUpdate
     {
-        
+        public void UnknownItem(Item item)
+        {
+            item.ItemName = "NO SUCH ITEM";
+            item.Quality = null;
+            item.SellIn = null;
+        }
     }
 }

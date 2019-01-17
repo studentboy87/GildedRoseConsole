@@ -1,11 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using GildedRoseConsole.Models;
+﻿using GildedRoseConsole.Models;
 using GildedRoseConsole.Services.Interfaces;
 
 namespace GildedRoseConsole.Services.Implementation
 {
-    public class AppService :IAppService
+    public class AppService : IAppService
     {
         public IDailyUpdateService DailyUpdateServiceCreator(Item item)
         {
@@ -21,19 +19,19 @@ namespace GildedRoseConsole.Services.Implementation
             {
                 return new BackStagePassUpdate();
             }
+            else if (item.ItemName.Contains("Conjured"))
+            {
+                return new StandardItemUpdate(2);
+            }
             else
             {
                 return new StandardItemUpdate();
             }
-
         }
 
-        public void ErrorUpdate(Item item)
+        public IErrorUpdate ErrorUpdate(Item item)
         {
-            item.ItemName = "NO SUCH ITEM";
-            item.Quality = null;
-            item.SellIn = null;
-
+            return new ErrorUpdate();
         }
     }
 }

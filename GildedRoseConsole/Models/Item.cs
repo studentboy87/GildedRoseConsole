@@ -2,8 +2,9 @@
 {
     public class Item : ItemBase
     {
-        //try with nullable then remove
         public int? SellIn { get; set; }
         public int? Quality { get; set; }
+        public string SellInString => SellIn != null ? SellIn.ToString() : "";
+        public string QualityString => Quality != null ? Quality.ToString() : "";
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using GildedRoseConsole;
-using Xunit;
-using Xunit.Abstractions;
-using Xunit.Sdk;
+﻿using Xunit.Abstractions;
 
 namespace GildedRoseTests
 {
